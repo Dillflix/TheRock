@@ -295,7 +295,7 @@ def main(cl_args: list[str]):
         )
 
     p = argparse.ArgumentParser("ptbuild.py")
-    default_tag = "v2.6.0"
+    default_tag = "v2.7.0-rc3"
     sub_p = p.add_subparsers(required=True)
     checkout_p = sub_p.add_parser("checkout", help="Clone PyTorch locally and checkout")
     add_common(checkout_p)
