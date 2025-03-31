@@ -71,6 +71,8 @@ RUN python3 -m pip install --break-system-packages -r /therock/pytorch/requireme
 ENV CMAKE_PREFIX_PATH=/opt/rocm
 ENV USE_KINETO=OFF
 ENV PYTORCH_ROCM_ARCH=$AMDGPU_TARGETS
+ENV MAX_JOBS=32
+ENV AOTRITON_INSTALL_FROM_SOURCE=1
 
 WORKDIR /therock/pytorch
 # TODO: PYTORCH_ROCM_ARCH from environment variables seems broken. So we
