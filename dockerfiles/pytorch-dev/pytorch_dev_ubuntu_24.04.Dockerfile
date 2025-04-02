@@ -67,12 +67,23 @@ FROM pytorch_sources AS pytorch_build
 ARG AMDGPU_TARGETS
 
 RUN python3 -m pip install --break-system-packages -r /therock/pytorch/requirements.txt
+# For aotriton build - install liblzma-dev
+# TODO: Once gfx1151 specific changes are merged, use precompiled aotriton instead
+RUN apt update && apt install -y liblzma-dev
 
 ENV CMAKE_PREFIX_PATH=/opt/rocm
 ENV USE_KINETO=OFF
 ENV PYTORCH_ROCM_ARCH=$AMDGPU_TARGETS
 ENV MAX_JOBS=32
 ENV AOTRITON_INSTALL_FROM_SOURCE=1
+# Add the following because otherwise third_party/protobuf breaks cmake configure for newer cmake versions
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
+# Setup environment.
+ENV PATH="/opt/rocm/bin:$PATH"
+RUN (echo "/opt/rocm/lib" > /etc/ld.so.conf.d/rocm.conf) && \
+    (echo "/opt/rocm/lib/rocm_sysdeps/lib" >> /etc/ld.so.conf.d/rocm.conf) && \
+    ldconfig -v
 
 WORKDIR /therock/pytorch
 # TODO: PYTORCH_ROCM_ARCH from environment variables seems broken. So we
