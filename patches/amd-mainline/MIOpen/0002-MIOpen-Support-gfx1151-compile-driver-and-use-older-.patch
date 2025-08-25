@@ -1,0 +1,83 @@
+From 6d74b821465dadf68c36716e0af13e1053e0e442 Mon Sep 17 00:00:00 2001
+From: Aaryaman Vasishta <jem456.vasishta@gmail.com>
+Date: Mon, 31 Mar 2025 18:01:02 +0100
+Subject: [PATCH] [MIOpen] Support gfx1151, compile driver and use older
+ version of frugally-deep
+
+---
+ driver/CMakeLists.txt                           | 5 +++++
+ src/CMakeLists.txt                              | 3 +++
+ src/include/miopen/solver/ck_utility_common.hpp | 3 +++
+ test/CMakeLists.txt                             | 2 ++
+ 4 files changed, 13 insertions(+)
+
+diff --git a/driver/CMakeLists.txt b/driver/CMakeLists.txt
+index 60d6fe6ce..ab2334041 100644
+--- a/driver/CMakeLists.txt
++++ b/driver/CMakeLists.txt
+@@ -72,9 +72,14 @@ endif()
+ add_dependencies(MIOpenDriver generate_kernels)
+ target_include_directories(MIOpenDriver PRIVATE ../src/kernels)
+ target_link_libraries(MIOpenDriver MIOpen Threads::Threads roc::rocrand)
++
+ if(NOT MIOPEN_EMBED_DB STREQUAL "")
+ target_link_libraries(MIOpenDriver $<BUILD_INTERFACE:miopen_data> )
+ endif()
++# Compilation breaks if this isn't explicitly added, because the headers are in a non-standard location
++# Based on https://github.com/ROCm/MIOpen/pull/3615
++target_link_libraries(MIOpen INTERFACE $<BUILD_INTERFACE:nlohmann_json::nlohmann_json>)
++target_link_libraries(MIOpen INTERFACE  $<BUILD_INTERFACE:SQLite::SQLite3>)
+ # Cmake does not add flags correctly for gcc
+ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU") 
+     set_target_properties(MIOpenDriver PROPERTIES COMPILE_FLAGS -pthread LINK_FLAGS -pthread)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 36befe40a..77fe33aa0 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -988,6 +988,9 @@ endif()
+ if(MIOPEN_ENABLE_SQLITE)
+     # MIOpen depends on SQLite
+     target_link_libraries(MIOpen PRIVATE SQLite::SQLite3)
++    # Compilation breaks if this isn't explicitly added, because the headers are in a non-standard location
++    # Based on https://github.com/ROCm/MIOpen/pull/3615
++    target_link_libraries(MIOpen INTERFACE  $<BUILD_INTERFACE:SQLite::SQLite3>)
+ endif()
+ ############################################################
+ # MIOpen depends on librt for Boost.Interprocess
+diff --git a/src/include/miopen/solver/ck_utility_common.hpp b/src/include/miopen/solver/ck_utility_common.hpp
+index 92352a6c6..8cbeb739d 100644
+--- a/src/include/miopen/solver/ck_utility_common.hpp
++++ b/src/include/miopen/solver/ck_utility_common.hpp
+@@ -61,6 +61,7 @@ static inline bool is_ck_supported_hardware(const Handle& handle)
+            StartsWith(handle.GetDeviceName(), "gfx1100") ||
+            StartsWith(handle.GetDeviceName(), "gfx1101") ||
+            StartsWith(handle.GetDeviceName(), "gfx1102") ||
++           StartsWith(handle.GetDeviceName(), "gfx1151") ||
+            StartsWith(handle.GetDeviceName(), "gfx1200") ||
+            StartsWith(handle.GetDeviceName(), "gfx1201");
+ }
+@@ -115,6 +116,8 @@ static inline auto get_ck_common_compiler_flag(const Handle& handle)
+         compiler_flag << " -DCK_AMD_GPU_GFX1031";
+     else if(StartsWith(device_name, "gfx1100"))
+         compiler_flag << " -DCK_AMD_GPU_GFX1100";
++    else if(StartsWith(device_name, "gfx1151"))
++	    compiler_flag << " -DCK_AMD_GPU_GFX1100";
+     else if(StartsWith(device_name, "gfx1101"))
+         compiler_flag << " -DCK_AMD_GPU_GFX1101";
+     else if(StartsWith(device_name, "gfx1102"))
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index d607040c7..ea0758729 100755
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -127,6 +127,8 @@ if(NOT (MIOPEN_TEST_GFX900 OR MIOPEN_TEST_GFX906 OR MIOPEN_TEST_GFX908 OR MIOPEN
+             set(MIOPEN_TEST_GFX110X ON)
+         elseif(ROCMINFO_OUTPUT MATCHES "gfx1102")
+             set(MIOPEN_TEST_GFX110X ON)
++        elseif(ROCMINFO_OUTPUT MATCHES "gfx1151")
++            set(MIOPEN_TEST_GFX110X ON)
+         elseif(ROCMINFO_OUTPUT MATCHES "gfx1200")
+             set(MIOPEN_TEST_GFX120X ON)
+         elseif(ROCMINFO_OUTPUT MATCHES "gfx1201")
+-- 
+2.43.0
+

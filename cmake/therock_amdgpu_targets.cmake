@@ -42,62 +42,28 @@ function(therock_add_amdgpu_target gfx_target product_name)
 endfunction()
 
 # gfx90X family
-therock_add_amdgpu_target(gfx906 "Radeon VII / MI50 CDNA" FAMILY dgpu-all gfx90X-all gfx90X-dgpu gfx90X-dcgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-    composable_kernel # https://github.com/ROCm/TheRock/issues/1245
-)
+therock_add_amdgpu_target(gfx906 "Radeon VII / MI50 CDNA" FAMILY dgpu-all gfx90X-all gfx90X-dgpu gfx90X-dcgpu)
 therock_add_amdgpu_target(gfx908 "MI100 CDNA" FAMILY gfx90X-all dcgpu-all gfx90X-dcgpu)
 therock_add_amdgpu_target(gfx90a "MI210/250 CDNA" FAMILY gfx90X-all dcgpu-all gfx90X-dcgpu)
 
 # gfx94X family
 therock_add_amdgpu_target(gfx942 "MI300A/MI300X CDNA" FAMILY dcgpu-all gfx94X-all gfx94X-dcgpu)
 
-# gfx950
-therock_add_amdgpu_target(gfx950 "" FAMILY dcgpu-all gfx950-all gfx950-dcgpu)
-
 # gfx101X family
-therock_add_amdgpu_target(gfx1010 "AMD RX 5700" FAMILY dgpu-all gfx101X-all gfx101X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-    composable_kernel # https://github.com/ROCm/TheRock/issues/1245
-)
-therock_add_amdgpu_target(gfx1011 "AMD Radeon Pro V520" FAMILY dgpu-all gfx101X-all gfx101X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-    composable_kernel # https://github.com/ROCm/TheRock/issues/1245
-)
-therock_add_amdgpu_target(gfx1012 "AMD RX 5500" FAMILY dgpu-all gfx101X-all gfx101X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-    composable_kernel # https://github.com/ROCm/TheRock/issues/1245
-)
+therock_add_amdgpu_target(gfx1010 "AMD RX 5700" FAMILY dgpu-all gfx101X-all gfx101X-dgpu)
+therock_add_amdgpu_target(gfx1011 "AMD Radeon Pro V520" FAMILY dgpu-all gfx101X-all gfx101X-dgpu)
+therock_add_amdgpu_target(gfx1012 "AMD RX 5500" FAMILY dgpu-all gfx101X-all gfx101X-dgpu)
 
 # gfx103X family
-therock_add_amdgpu_target(gfx1030 "AMD RX 6800 / XT" FAMILY dgpu-all gfx103X-all gfx103X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-)
-therock_add_amdgpu_target(gfx1032 "AMD RX 6600" FAMILY dgpu-all gfx103X-all gfx103X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-)
-therock_add_amdgpu_target(gfx1035 "AMD Radeon 680M Laptop iGPU" igpu-all FAMILY gfx103X-all gfx103X-igpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-)
-therock_add_amdgpu_target(gfx1036 "AMD Raphael iGPU" FAMILY igpu-all gfx103X-all gfx103X-igpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-)
+therock_add_amdgpu_target(gfx1030 "AMD RX 6800 / XT" FAMILY dgpu-all gfx103X-all gfx103X-dgpu)
+therock_add_amdgpu_target(gfx1032 "AMD RX 6600" FAMILY dgpu-all gfx103X-all gfx103X-dgpu)
+therock_add_amdgpu_target(gfx1035 "AMD Radeon 680M Laptop iGPU" igpu-all FAMILY gfx103X-all gfx103X-igpu)
+therock_add_amdgpu_target(gfx1036 "AMD Raphael iGPU" FAMILY igpu-all gfx103X-all gfx103X-igpu)
 
 # gfx110X family
 therock_add_amdgpu_target(gfx1100 "AMD RX 7900 XTX" FAMILY dgpu-all gfx110X-all gfx110X-dgpu)
 therock_add_amdgpu_target(gfx1101 "AMD RX 7800 XT" FAMILY dgpu-all gfx110X-all gfx110X-dgpu)
-therock_add_amdgpu_target(gfx1102 "AMD RX 7700S/Framework Laptop 16" FAMILY dgpu-all gfx110X-all gfx110X-dgpu
-  EXCLUDE_TARGET_PROJECTS
-    hipBLASLt # https://github.com/ROCm/TheRock/issues/1062
-)
+therock_add_amdgpu_target(gfx1102 "AMD RX 7700S/Framework Laptop 16" FAMILY dgpu-all gfx110X-all gfx110X-dgpu)
 therock_add_amdgpu_target(gfx1103 "AMD Radeon 780M Laptop iGPU" FAMILY igpu-all gfx110X-all gfx110X-igpu)
 
 # gfx115X family
@@ -112,7 +78,6 @@ therock_add_amdgpu_target(gfx1151 "AMD Strix Halo iGPU" FAMILY igpu-all gfx115X-
 )
 
 # gfx120X family
-therock_add_amdgpu_target(gfx1200 "AMD RX 9060 / XT" FAMILY dgpu-all gfx120X-all)
 therock_add_amdgpu_target(gfx1201 "AMD RX 9070 / XT" FAMILY dgpu-all gfx120X-all)
 
 
@@ -167,11 +132,6 @@ function(therock_validate_amdgpu_targets)
   set(THEROCK_AMDGPU_TARGETS "${_expanded_targets}" PARENT_SCOPE)
   string(JOIN " " _expanded_targets_spaces ${_expanded_targets})
   set(THEROCK_AMDGPU_TARGETS_SPACES "${_expanded_targets_spaces}" PARENT_SCOPE)
-
-  # Export the dist targets as the same until we have support/need to separate
-  # them.
-  set(THEROCK_DIST_AMDGPU_TARGETS "${_expanded_targets}" PARENT_SCOPE)
-  set(THEROCK_DIST_AMDGPU_TARGETS_SPACES "${_expanded_targets_spaces}" PARENT_SCOPE)
 
   if(NOT THEROCK_AMDGPU_DIST_BUNDLE_NAME)
     list(LENGTH _explicit_selections _explicit_count)

@@ -17,9 +17,10 @@ __pycache__
 
 # Patch control files.
 .*.smrev
-
 # Output directories.
 /build/
 /install/
 /output-*/
 /out/
+# Screen
+screenlog.*
